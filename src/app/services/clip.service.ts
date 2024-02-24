@@ -24,6 +24,7 @@ export class ClipService {
   private clipsCollection: AngularFirestoreCollection<Clip>;
   pageClips: Clip[] = [];
   requestInProgress = false;
+  PAGE_SIZE = 8;
 
   constructor(
     private db: AngularFirestore,
@@ -80,7 +81,9 @@ export class ClipService {
     if (this.requestInProgress) return;
     this.requestInProgress = true;
 
-    let query = this.clipsCollection.ref.orderBy('timestamp', 'desc').limit(6);
+    let query = this.clipsCollection.ref
+      .orderBy('timestamp', 'desc')
+      .limit(this.PAGE_SIZE);
 
     const { length } = this.pageClips;
     if (length) {
